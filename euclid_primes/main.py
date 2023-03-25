@@ -2,15 +2,16 @@
 # https://youtu.be/f5slLeCz7p8
 
 
-n = 23 * 13 # int(input())
+n = 107 * 199  # int(input())
+print(n)
 
-basis = 6
+basis = 8
 r = 1
 while (basis ** r) % n != 1:
     r += 1
-    print(r)
+    print(r, basis ** r, basis ** r // n, basis ** r % n)
 
-pred_euklid_multiplier = int(basis ** (r / 2) + 1)
+pred_euklid_multiplier = int(basis ** (r // 2) - 1)
 numerator = pred_euklid_multiplier
 denominator = n
 
@@ -23,6 +24,10 @@ while True:
     numerator = denominator
     denominator = reminder
 
-print(denominator)
-print((pred_euklid_multiplier - 1) % 13)
-print((pred_euklid_multiplier - 1) % 23)
+multiplier1 = denominator
+multiplier2 = n // multiplier1
+
+print(pred_euklid_multiplier % 13)
+print(pred_euklid_multiplier % 23)
+print(multiplier1)
+print(multiplier2)
