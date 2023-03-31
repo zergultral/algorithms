@@ -5,22 +5,57 @@ def makenode(n):
     node = makenode(n // 10) if n >= 10 else None
     return {'value': n % 10, 'next': node}
 
-def summ(n, m, o=0):
-    value = ((n['value'] + m['value'] + o) % 10)
-    if (n['value'] + m['value'] + o) >= 10:
-        o = 1
-    if n['next'] is None and m['next'] is None:
-        if o == 0:
-            node = None
-        else:
-            node = {'value': 1, 'next': None}
-    else:
-        if n['next'] is None:
-            n['next'] = {'value': 0, 'next': None}
-        elif m['next'] is None:
-            m['next'] = {'value': 0, 'next': None}
-        node = summ(n['next'], m['next'], o)
+def summ(n, m, vume=0):
+    value = ((n['value'] + m['value'] + vume) % 10)
+    vume = (n['value'] + m['value'] + vume) // 10
+
+    n_next = n['next']
+    m_next = m['next']
+
+    zero = {'value': 0, 'next': None}
+
+    if n_next is not None and m_next is None:
+        m_next = zero
+
+    if n_next is None and m_next is not None:
+        n_next = zero
+
+    if n_next is None and m_next is None and vume == 1:
+        n_next = zero
+        m_next = zero
+
+    node = summ(n_next, m_next, vume) if n_next and m_next else None
+
     return {'value': value, 'next': node}
+
+    # value = ((n['value'] + m['value'] + o) % 10)
+    # o = 1 if (n['value'] + m['value'] + o) >= 10 else 0
+    #
+    # n_next = n['next']
+    # m_next = m['next']
+    #
+    # if n['next'] is not None and m['next'] is not None:
+    #     a = 1
+    #     # node = summ(n['next'], m['next'], o)
+    # if n['next'] is None and m['next'] is not None:
+    #     n_next = {'value': 0, 'next': None}
+    #     # node = summ({'value': 0, 'next': None}, m['next'], o)
+    # elif n['next'] is not None and m['next'] is None:
+    #     m_next = {'value': 0, 'next': None}
+    #     # node = summ(n['next'], {'value': 0, 'next': None}, o)
+    # elif o == 1:
+    #     n_next = {'value': 0, 'next': None}
+    #     m_next = {'value': 0, 'next': None}
+    #     # node = summ({'value': 0, 'next': None}, {'value': 0, 'next': None}, o)
+    # # else:
+    # #     node = None
+    #
+    # if n_next and m_next:
+    #     node = summ(n_next, m_next, o)
+    # else:
+    #     node = None
+    # return {'value': value, 'next': node}
+
 
 def makenumber(n):
     nextnumber = 10 * makenumber(n['next']) if n['next'] is not None else 0
@@ -42,7 +77,7 @@ def process_input():
     node2 = makenode(number2)
     result = makenumber(summ(node1, node2))
     print(number1, number2)
-    print(result)
+    print(result, number1 + number2)
 
 def process_test():
     test = [
@@ -50,7 +85,8 @@ def process_test():
         [999, 1, 1000],
         [1000, 0, 1000],
         [9, 9, 18],
-        [99, 99, 198]
+        [99, 99, 198],
+        [163, 29, 192]
     ]
 
     for testCase in test:
