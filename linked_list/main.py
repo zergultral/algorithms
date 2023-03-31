@@ -7,17 +7,19 @@ def makenode(n):
 
 def summ(n, m, o=0):
     value = ((n['value'] + m['value'] + o) % 10)
-    o = 1 if (n['value'] + m['value'] + o) >= 10 else 0
-    if n['next'] is not None and m['next'] is not None:
-        node = summ(n['next'], m['next'], o)
-    elif n['next'] is None and m['next'] is not None:
-        node = summ({'value': 0, 'next': None}, m['next'], o)
-    elif n['next'] is not None and m['next'] is None:
-        node = summ(n['next'], {'value': 0, 'next': None}, o)
-    elif o == 1:
-        node = summ({'value': 0, 'next': None}, {'value': 0, 'next': None}, o)
+    if (n['value'] + m['value'] + o) >= 10:
+        o = 1
+    if n['next'] is None and m['next'] is None:
+        if o == 0:
+            node = None
+        else:
+            node = {'value': 1, 'next': None}
     else:
-        node = None
+        if n['next'] is None:
+            n['next'] = {'value': 0, 'next': None}
+        elif m['next'] is None:
+            m['next'] = {'value': 0, 'next': None}
+        node = summ(n['next'], m['next'], o)
     return {'value': value, 'next': node}
 
 def makenumber(n):
